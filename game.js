@@ -6,7 +6,7 @@ const GAME_WIDTH = 400;
 const GAME_HEIGHT = 600;
 const WALL_THICKNESS = 20;
 const DROP_ZONE_Y = 100;
-const GRAVITY = 1;
+const GRAVITY = 1.2; // 少し重力を強くする
 const FRUITS_COUNT = 10; // フルーツの種類数
 
 // フルーツの設定 (サイズと点数)
@@ -84,7 +84,10 @@ function initGame() {
         gravity: {
             x: 0,
             y: GRAVITY
-        }
+        },
+        constraintIterations: 3,  // 拘束反復回数を増やす
+        positionIterations: 6,    // 位置反復回数を増やす
+        velocityIterations: 4     // 速度反復回数を増やす
     });
     
     // レンダリングの設定
@@ -174,6 +177,12 @@ function setupEventListeners() {
             
             // 同じタイプのフルーツが衝突した場合
             if (bodyA.fruitIndex !== undefined && bodyB.fruitIndex !== undefined && bodyA.fruitIndex === bodyB.fruitIndex) {
+                // 同じIDのフルーツは合体させない（自分自身との衝突を防ぐ）
+                if (bodyA.id === bodyB.id) continue;
+                
+                // 最近合体したフルーツは無視（連鎖反応を防ぐ）
+                if (bodyA.recentlyMerged || bodyB.recentlyMerged) continue;
+                
                 if (bodyA.fruitIndex < FRUITS_COUNT - 1) {
                     // 合体して次のフルーツになる
                     const newIndex = bodyA.fruitIndex + 1;
@@ -187,7 +196,13 @@ function setupEventListeners() {
                     Composite.remove(engine.world, toRemove);
                     
                     // 新しいフルーツを作成
-                    createFruit(newIndex, position.x, position.y);
+                    const newFruit = createFruit(newIndex, position.x, position.y);
+                    
+                    // 合体直後のフラグを設定（0.1秒後に解除）
+                    newFruit.recentlyMerged = true;
+                    setTimeout(() => {
+                        newFruit.recentlyMerged = false;
+                    }, 100);
                     
                     // スコアの更新
                     updateScore(FRUITS[newIndex].score);
@@ -270,9 +285,9 @@ function createFruit(index, x, y, isControlled = false) {
     const fruit = Bodies.circle(x, y, FRUITS[index].radius, {
         fruitIndex: index,
         label: 'fruit',
-        restitution: 0.3,
-        friction: 0.01,
-        density: 0.001,
+        restitution: 0.5, // 反発係数を上げる
+        friction: 0.05,   // 摩擦を少し増やす
+        density: 0.002,   // 密度を少し上げる
         render: {
             fillStyle: FRUIT_COLORS[index],
             // 画像を使用する場合はこちらを使用
@@ -288,6 +303,9 @@ function createFruit(index, x, y, isControlled = false) {
     if (isControlled) {
         Body.setStatic(fruit, true);
         currentFruit = fruit;
+    } else {
+        // ドロップされたフルーツには衝撃を加えて動きを良くする
+        Body.setAngularVelocity(fruit, (Math.random() - 0.5) * 0.05);
     }
     
     World.add(engine.world, fruit);
@@ -303,8 +321,21 @@ function dropFruit(x) {
     lastFruitDropTime = now;
     dropLock = true;
     
+    if (!currentFruit) {
+        console.error("currentFruit is null");
+        dropLock = false;
+        return;
+    }
+    
+    // 速度にわずかなランダム性を追加して、同じ場所に落ちるのを防ぐ
+    const randomVelocity = {
+        x: (Math.random() - 0.5) * 0.5,
+        y: 0
+    };
+    
     // 静的状態を解除してドロップ
     Body.setStatic(currentFruit, false);
+    Body.setVelocity(currentFruit, randomVelocity);
     fruitCount++;
     
     // 少し待ってから次のフルーツを準備
