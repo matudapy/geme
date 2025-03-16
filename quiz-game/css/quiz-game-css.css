@@ -1,0 +1,220 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Hiragino Kaku Gothic Pro', 'Meiryo', sans-serif;
+}
+
+body {
+    background-color: #f5f7fa;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #2c3e50;
+}
+
+h2 {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+/* スタート画面 */
+#start-screen {
+    text-align: center;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.intro-text {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+}
+
+#start-button {
+    margin-top: 20px;
+    background-color: #3498db;
+    color: white;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+}
+
+#start-button:hover {
+    background-color: #2980b9;
+}
+
+/* クイズコンテナ */
+#quiz-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 進行状況 */
+.progress-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+/* タイマー */
+.timer-container {
+    margin-bottom: 20px;
+}
+
+.timer-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+#timer-progress {
+    height: 100%;
+    width: 100%;
+    background-color: #2ecc71;
+    transition: width 1s linear, background-color 1s;
+}
+
+.timer-text {
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+/* 選択肢 */
+.options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.option {
+    width: 100%;
+    padding: 12px 15px;
+    text-align: left;
+    background-color: #f1f2f6;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.option:hover:not([disabled]) {
+    background-color: #e8f0fe;
+}
+
+.option[disabled] {
+    cursor: not-allowed;
+}
+
+.correct {
+    background-color: #d5f5e3 !important;
+    border-color: #2ecc71 !important;
+}
+
+.incorrect {
+    background-color: #fadbd8 !important;
+    border-color: #e74c3c !important;
+}
+
+/* 結果コンテナ */
+#result-container {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+#result-container.correct {
+    background-color: #d5f5e3;
+    border: 1px solid #2ecc71;
+}
+
+#result-container.incorrect {
+    background-color: #fadbd8;
+    border: 1px solid #e74c3c;
+}
+
+#result-text {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+#explanation-text {
+    font-size: 0.9rem;
+}
+
+/* 次へボタン */
+#next-container {
+    text-align: center;
+}
+
+#next-button {
+    background-color: #3498db;
+    color: white;
+}
+
+#next-button:hover {
+    background-color: #2980b9;
+}
+
+/* ゲーム終了画面 */
+#end-screen {
+    text-align: center;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#final-score, #final-total {
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+#final-message {
+    margin: 15px 0 25px;
+    font-size: 1.1rem;
+}
+
+#restart-button {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 25px;
+}
+
+#restart-button:hover {
+    background-color: #2980b9;
+}
+
+/* ユーティリティクラス */
+.hidden {
+    display: none;
+}
