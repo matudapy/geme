@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>今日の占い</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+    <div class="shooting-stars" id="shootingStars"></div>
+    
+    <div class="content-wrapper">
+        <header>
+            <h1>今日の占い</h1>
+            <div class="moon"><i class="fas fa-moon"></i></div>
+        </header>
+        
+        <div class="fortune-container">
+            <div class="date-display" id="currentDate"></div>
+            
+            <div class="sign-selector">
+                <h2><i class="fas fa-star"></i> 星座を選んでください <i class="fas fa-star"></i></h2>
+                <select id="zodiacSign">
+                    <option value="aries">おひつじ座 (3/21 - 4/19)</option>
+                    <option value="taurus">おうし座 (4/20 - 5/20)</option>
+                    <option value="gemini">ふたご座 (5/21 - 6/21)</option>
+                    <option value="cancer">かに座 (6/22 - 7/22)</option>
+                    <option value="leo">しし座 (7/23 - 8/22)</option>
+                    <option value="virgo">おとめ座 (8/23 - 9/22)</option>
+                    <option value="libra">てんびん座 (9/23 - 10/23)</option>
+                    <option value="scorpio">さそり座 (10/24 - 11/22)</option>
+                    <option value="sagittarius">いて座 (11/23 - 12/21)</option>
+                    <option value="capricorn">やぎ座 (12/22 - 1/19)</option>
+                    <option value="aquarius">みずがめ座 (1/20 - 2/18)</option>
+                    <option value="pisces">うお座 (2/19 - 3/20)</option>
+                </select>
+                
+                <div>
+                    <button id="fortuneButton">
+                        <span class="button-text">占う</span>
+                        <span class="button-icon"><i class="fas fa-magic"></i></span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="fortune-result" id="fortuneResult">
+                <h2 id="signTitle"></h2>
+                <div class="constellation-icon" id="constellationIcon"></div>
+                <div class="stars-rating" id="luckStars"></div>
+                <div class="fortune-text" id="fortuneText"></div>
+                
+                <div class="lucky-items">
+                    <div class="lucky-item">
+                        <h3><i class="fas fa-palette"></i> ラッキーカラー</h3>
+                        <div id="luckyColor"></div>
+                    </div>
+                    <div class="lucky-item">
+                        <h3><i class="fas fa-dice"></i> ラッキーナンバー</h3>
+                        <div id="luckyNumber"></div>
+                    </div>
+                    <div class="lucky-item">
+                        <h3><i class="fas fa-gift"></i> ラッキーアイテム</h3>
+                        <div id="luckyItem"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
