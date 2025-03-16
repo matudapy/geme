@@ -229,14 +229,16 @@ function setupEventListeners() {
         const rect = canvas.getBoundingClientRect();
         const x = e.clientX - rect.left;
         
-        // 既存のフルーツがあれば削除
+        // 現在のフルーツをドロップ
         if (currentFruit) {
-            World.remove(engine.world, currentFruit);
+            // フルーツの位置を確実に設定
+            Body.setPosition(currentFruit, { 
+                x: Math.max(FRUITS[currentFruitIndex].radius, Math.min(GAME_WIDTH - FRUITS[currentFruitIndex].radius, x)), 
+                y: DROP_ZONE_Y 
+            });
+            // フルーツをドロップ
+            dropFruit(x);
         }
-        
-        // フルーツのドロップ
-        dropFruit(x);
-    });
     
     // マウス移動イベント
     canvas.addEventListener('mousemove', (e) => {
@@ -244,9 +246,10 @@ function setupEventListeners() {
         
         const rect = canvas.getBoundingClientRect();
         const x = e.clientX - rect.left;
+        const adjustedX = Math.max(FRUITS[currentFruitIndex].radius, Math.min(GAME_WIDTH - FRUITS[currentFruitIndex].radius, x));
         
         // フルーツの位置を更新
-        Body.setPosition(currentFruit, { x: Math.max(FRUITS[currentFruitIndex].radius, Math.min(GAME_WIDTH - FRUITS[currentFruitIndex].radius, x)), y: DROP_ZONE_Y });
+        Body.setPosition(currentFruit, { x: adjustedX, y: DROP_ZONE_Y });
     });
     
     // スタートボタンイベント
@@ -282,6 +285,11 @@ function setupEventListeners() {
 
 // フルーツの作成
 function createFruit(index, x, y, isControlled = false) {
+    // 境界チェック
+    x = Math.max(FRUITS[index].radius, Math.min(GAME_WIDTH - FRUITS[index].radius, x));
+    
+    console.log(`Creating fruit index: ${index}, x: ${x}, y: ${y}, isControlled: ${isControlled}`);
+    
     const fruit = Bodies.circle(x, y, FRUITS[index].radius, {
         fruitIndex: index,
         label: 'fruit',
@@ -327,15 +335,18 @@ function dropFruit(x) {
         return;
     }
     
-    // 速度にわずかなランダム性を追加して、同じ場所に落ちるのを防ぐ
-    const randomVelocity = {
-        x: (Math.random() - 0.5) * 0.5,
-        y: 0
-    };
+    // フルーツの最終位置を確実に設定
+    const dropX = Math.max(FRUITS[currentFruitIndex].radius, Math.min(GAME_WIDTH - FRUITS[currentFruitIndex].radius, x));
+    Body.setPosition(currentFruit, { x: dropX, y: DROP_ZONE_Y });
     
     // 静的状態を解除してドロップ
     Body.setStatic(currentFruit, false);
-    Body.setVelocity(currentFruit, randomVelocity);
+    
+    // わずかなランダム性を追加
+    Body.setVelocity(currentFruit, { x: (Math.random() - 0.5) * 0.5, y: 0.1 });
+    Body.setAngularVelocity(currentFruit, (Math.random() - 0.5) * 0.05);
+    
+    console.log("Dropping fruit at:", dropX, DROP_ZONE_Y);
     fruitCount++;
     
     // 少し待ってから次のフルーツを準備
@@ -345,13 +356,9 @@ function dropFruit(x) {
         nextFruitIndex = Math.floor(Math.random() * 5); // 最初の5種類からランダム
         updateNextFruitDisplay();
         
-        // 落下するフルーツの数が10個を超えるたびに、新しいフルーツの種類を解放
-        if (fruitCount % 10 === 0 && nextFruitIndex < 4) {
-            nextFruitIndex = Math.min(4, nextFruitIndex + 1);
-        }
-        
         // 次のフルーツをドロップゾーンに配置
-        currentFruit = createFruit(currentFruitIndex, x, DROP_ZONE_Y, true);
+        currentFruit = createFruit(currentFruitIndex, GAME_WIDTH / 2, DROP_ZONE_Y, true);
+        console.log("Created new fruit:", currentFruit);
     }, 500);
 }
 
@@ -378,8 +385,12 @@ function startGame() {
     startButton.disabled = true;
     Runner.run(runner, engine);
     
+    console.log("Game started");
+    
     // 最初のフルーツを作成
+    currentFruitIndex = Math.floor(Math.random() * 5);
     currentFruit = createFruit(currentFruitIndex, GAME_WIDTH / 2, DROP_ZONE_Y, true);
+    console.log("Initial fruit created:", currentFruit);
 }
 
 // ゲームリセット
