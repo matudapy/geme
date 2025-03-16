@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スイカゲーム</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Matter.jsの物理エンジンを読み込み -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+    <!-- Supabaseクライアント -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="game-header">
+            <h1>スイカゲーム</h1>
+            <div class="score-container">
+                <span>スコア: </span>
+                <span id="score">0</span>
+            </div>
+            <div class="next-fruit">
+                <span>次のフルーツ: </span>
+                <div id="next-fruit-display"></div>
+            </div>
+        </div>
+
+        <div class="game-container">
+            <div id="game-canvas-container">
+                <canvas id="game-canvas"></canvas>
+            </div>
+            <div class="game-controls">
+                <button id="start-button">ゲームスタート</button>
+                <button id="reset-button">リセット</button>
+            </div>
+        </div>
+
+        <div class="ranking-container">
+            <h2>ランキング TOP10</h2>
+            <div class="player-info">
+                <input type="text" id="player-name" placeholder="プレイヤー名を入力" maxlength="10">
+                <button id="submit-score">スコア送信</button>
+            </div>
+            <table id="ranking-table">
+                <thead>
+                    <tr>
+                        <th>順位</th>
+                        <th>プレイヤー</th>
+                        <th>スコア</th>
+                        <th>日時</th>
+                    </tr>
+                </thead>
+                <tbody id="ranking-body">
+                    <!-- ランキングデータがここに入ります -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ゲームオーバーモーダル -->
+        <div id="game-over-modal" class="modal">
+            <div class="modal-content">
+                <h2>ゲームオーバー</h2>
+                <p>最終スコア: <span id="final-score">0</span></p>
+                <div class="modal-buttons">
+                    <button id="retry-button">もう一度遊ぶ</button>
+                    <button id="save-score-button">スコアを保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ゲームロジック -->
+    <script src="supabase.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
