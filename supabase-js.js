@@ -1,6 +1,6 @@
 // Supabase設定
-const SUPABASE_URL = 'https://YOUR_SUPABASE_URL.supabase.co';
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+const SUPABASE_URL = 'https://alckuhuidtwayycbxakw.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFsY2t1aHVpZHR3YXl5Y2J4YWt3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIwODg1MTQsImV4cCI6MjA1NzY2NDUxNH0.j_zc5yKsgcfvT3bJx5kaOgOgXgtxH0M1yWBlkk8Zsdo';
 
 // Supabaseクライアントの初期化
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
